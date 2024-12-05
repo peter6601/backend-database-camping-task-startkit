@@ -186,7 +186,7 @@ where id = (select id from "SKILL" where name = '空中瑜伽');
 
 insert into "COURSE"(user_id, skill_id, name, start_at, end_at, max_participants, meeting_url) values 
 (
-    (select id from "USER" where email = "lee2000@hexschooltest.io"),
+    (select id from "USER" where email = 'lee2000@hexschooltest.io'),
     (select id from "SKILL" where name = '重訓'),
     '重訓基礎課',
     '2024-11-25 14:00:00',
