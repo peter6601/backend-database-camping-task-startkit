@@ -286,6 +286,28 @@ group by user_id;
 --     inner join ( 用戶王小明的已使用堂數) as "COURSE_BOOKING"
 --     on "COURSE_BOOKING".user_id = "CREDIT_PURCHASE".user_id;
 
+SELECT 
+    "CREDIT_PURCHASE".user_id,
+    ("CREDIT_PURCHASE".total_credit - COALESCE("COURSE_BOOKING".used_credit, 0)) as remaining_credit
+FROM (
+    SELECT 
+        user_id, 
+        SUM(purchased_credits) as total_credit
+    FROM "CREDIT_PURCHASE"
+    WHERE user_id = (SELECT id FROM "USER" WHERE email = 'wXlTq@hexschooltest.io')
+    GROUP BY user_id
+) as "CREDIT_PURCHASE"
+LEFT JOIN (
+    SELECT 
+        user_id, 
+        COUNT(join_at) as used_credit
+    FROM "COURSE_BOOKING"
+    WHERE user_id = (SELECT id FROM "USER" WHERE email = 'wXlTq@hexschooltest.io')
+    GROUP BY user_id
+) as "COURSE_BOOKING"
+ON "COURSE_BOOKING".user_id = "CREDIT_PURCHASE".user_id;
+
+
 -- ████████  █████   █     ███  
 --   █ █   ██    █  █     █     
 --   █ █████ ███ ███      ████  
@@ -296,14 +318,14 @@ group by user_id;
 -- 6-1 查詢：查詢專長為重訓的教練，並按經驗年數排序，由資深到資淺（需使用 inner join 與 order by 語法)
 -- 顯示須包含以下欄位： 教練名稱 , 經驗年數, 專長名稱
 SELECT
-    "USER".name AS 教練名稱,
-    "COACH".experience_years AS 經驗年數,
-    "SKILL".name AS 專長名稱
+"USER".name AS 教練名稱,
+"COACH".experience_years AS 經驗年數,
+"SKILL".name AS 專長名稱
 FROM "COACH_LINK_SKILL"
-where "SKILL".name = "重訓"
 INNER JOIN "COACH" ON "COACH_LINK_SKILL".coach_id = "COACH".id
 INNER JOIN "USER" ON "COACH".user_id = "USER".id
 INNER JOIN "SKILL" ON "COACH_LINK_SKILL".skill_id = "SKILL".id
+WHERE "SKILL".name = '重訓'
 ORDER BY "COACH".experience_years DESC;
 
 
