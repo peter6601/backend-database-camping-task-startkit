@@ -357,7 +357,7 @@ group by cp.name;
 
 select 
 SUM(price_paid) as 總營收
-from "CREDIT_PURCHASE"
+from "CREDIT_PURCHASE" p
 where EXTRACT(MONTH FROM p.purchase_at) = 11;
  
 
