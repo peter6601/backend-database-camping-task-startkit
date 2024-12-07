@@ -369,4 +369,4 @@ count(Distinct cb.user_id) as 預約會員人數
 from "COURSE_BOOKING" cb
 where EXTRACT(MONTH FROM cb.created_at) = 11
 and cb.status is not NULL
-and b.cancelled_at is NULL;
+and cb.cancelled_at is NULL;
